@@ -28,3 +28,6 @@
   (if (= :PostToConnection (:op op-map))
     (update http-request :uri #(str % (-> op-map :request :ConnectionId)))
     http-request))
+
+(defmethod modify-http-request "glacier" [service op-map http-request]
+  (assoc-in http-request [:headers "x-amz-glacier-version"] (get-in service [:metadata :apiVersion])))
